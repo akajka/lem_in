@@ -6,18 +6,20 @@
 /*   By: akorobov <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/02 17:27:34 by akorobov          #+#    #+#             */
-/*   Updated: 2019/03/04 18:53:34 by akorobov         ###   ########.fr       */
+/*   Updated: 2019/03/06 15:05:09 by akorobov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-void		free_2d(char ***sp)
+void		free_2d(char ***s)
 {
+	char	**sp;
 	int		count;
 
 	count = 0;
-	while (*sp[count])
-		ft_strdel(&(*sp[count++]));
-	free(*sp);
+	sp = *s;
+	while (sp[count])
+		ft_strdel(&sp[count++]);
+	free(sp);
 }

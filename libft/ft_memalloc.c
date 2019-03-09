@@ -6,7 +6,7 @@
 /*   By: akorobov <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/10/26 14:23:16 by akorobov          #+#    #+#             */
-/*   Updated: 2018/10/27 16:59:02 by akorobov         ###   ########.fr       */
+/*   Updated: 2019/03/09 16:09:28 by akorobov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 
 void	*ft_memalloc(size_t size)
 {
-	char	*c;
+	void	*c;
 
 	c = (void *)malloc(size * sizeof(void *));
 	if (c == NULL)

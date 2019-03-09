@@ -6,30 +6,13 @@
 /*   By: akorobov <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/03 17:48:13 by akorobov          #+#    #+#             */
-/*   Updated: 2019/03/05 15:23:21 by akorobov         ###   ########.fr       */
+/*   Updated: 2019/03/09 21:44:55 by akorobov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "lem_in.h"
 
-void	save_file(t_info *info, char *str)
-{
-	t_list	*tmp;
-	t_list	*last;
-
-	tmp = (t_list *)malloc(sizeof(t_list));
-	tmp->content = ft_strdup(str);
-	tmp->next = NULL;
-	last = info->file;
-	while (last && last->next)
-		last = last->next;
-	if (last)
-		last->next = tmp;
-	else
-		info->file = tmp;
-}
-
-t_room	*new_room(t_info *info, char **line)
+t_room		*new_room(t_info *info, char **line)
 {
 	t_room	*tmp;
 
@@ -51,25 +34,23 @@ void		get_extremity(t_info *info)
 	count = 0;
 	c = info->line->content[2];
 	info->line = info->line->next;
-	if (info->line)
+	if (info->line && ++info->string)
 	{
 		split = ft_strsplit(info->line->content, ' ');
 		if (ft_size2d(split) != 3)
-			print_error('s', info->string);
+			print_error(c, info->string);
 		info_room(info, split);
 		if (c == 's')
 			info->start = info->room;
 		else
 			info->end = info->room;
-		while (split[count])
-			ft_strdel(&split[count++]);
-		free(split);
+		free_2d(&split);
 	}
 	else
 		print_error(c, info->string);
 }
 
-void	val_test_room(t_room *rooms, t_room *tmp, int string)
+void		val_test_room(t_room *rooms, t_room *tmp, int string)
 {
 	t_room	*test;
 
@@ -79,12 +60,12 @@ void	val_test_room(t_room *rooms, t_room *tmp, int string)
 		if (!ft_strcmp(test->name_room, tmp->name_room))
 			print_error('d', string);
 		if (test->x == tmp->x && test->y == tmp->y)
-			print_error('c', string);
+			print_error('Z', string);
 		test = test->next;
 	}
 }
 
-void	val_test_link(t_room *room_link, t_room *need_room, int string)
+void		val_test_link(t_room *room_link, t_room *need_room, int string)
 {
 	t_link	*nd;
 	t_link	*rl;
@@ -105,7 +86,7 @@ void	val_test_link(t_room *room_link, t_room *need_room, int string)
 	}
 }
 
-void	new_link(t_room *rooms, t_room *need_room,
+void		new_link(t_room *rooms, t_room *need_room,
 		char *name_link, int string)
 {
 	t_room	*room_link;
@@ -115,13 +96,13 @@ void	new_link(t_room *rooms, t_room *need_room,
 		print_error('l', string);
 	room_link = rooms;
 	while (room_link)
-		if (ft_strcmp(room_link->name_room, name_link))	
+		if (ft_strcmp(room_link->name_room, name_link))
 			room_link = room_link->next;
 		else
 			break ;
-	val_test_link(room_link, need_room, string);
 	if (room_link)
 	{
+		val_test_link(room_link, need_room, string);
 		new_link = (t_link *)malloc(sizeof(t_link));
 		new_link->room = room_link;
 		new_link->next = need_room->links;
