@@ -6,7 +6,7 @@
 /*   By: akorobov <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/21 11:29:45 by akorobov          #+#    #+#             */
-/*   Updated: 2019/03/09 23:02:15 by akorobov         ###   ########.fr       */
+/*   Updated: 2019/03/11 14:56:26 by akorobov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,10 +36,12 @@ typedef struct		s_link
 {
 	t_room			*room;
 	struct s_link	*next;
+	struct s_link	*prev;
 }					t_link;
 
 typedef struct		s_path
 {
+	int				ness;
 	int				valid;
 	int				room_col;
 	t_link			*link;
@@ -49,8 +51,10 @@ typedef struct		s_path
 
 typedef struct		s_info
 {
+	int				done;
 	int				us;
 	struct ttysize	max;
+	int				col_path;
 	int				col_room;
 	long int		ants;
 	t_list			*file;
@@ -78,6 +82,7 @@ void				check_extremity(t_info *info);
 void				init_start(t_info *info);
 t_link				*bfs(t_info *info);
 void				new_way(t_link *last, t_info *info);
+void				ants_go_to_end(t_info *info);
 
 
 t_room				*new_room(t_info *info, char **line);

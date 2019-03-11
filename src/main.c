@@ -6,7 +6,7 @@
 /*   By: akorobov <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/19 17:25:37 by akorobov          #+#    #+#             */
-/*   Updated: 2019/03/09 23:02:10 by akorobov         ###   ########.fr       */
+/*   Updated: 2019/03/11 12:00:08 by akorobov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,13 +53,12 @@ int			main(int argc, char **argv)
 	while ((link_to_end = bfs(info)))
 	{
 		new_way(link_to_end, info);
-		if (info->start_path)
+		if (!info->start_path)
 			info->start_path = info->paths;
 		if (!(info->queue = info->queue->next))
 			break ;
 	}
-//	if (info->paths)
-//		ants_go_to_end(info);
-//	system("leaks lem_in");
+	if (info->paths)
+		ants_go_to_end(info);
 	return (0);
 }

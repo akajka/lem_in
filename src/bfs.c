@@ -6,7 +6,7 @@
 /*   By: akorobov <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/04 18:28:47 by akorobov          #+#    #+#             */
-/*   Updated: 2019/03/09 23:02:12 by akorobov         ###   ########.fr       */
+/*   Updated: 2019/03/11 14:09:25 by akorobov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,27 +70,27 @@ t_link		*bfs(t_info *info)
 void		new_way(t_link *last, t_info *info)
 {
 	t_path	*new_path;
-	t_path	*old_path;
 	t_link	*new_link;
 	t_room	*tmp_room;
 
-	old_path = info->paths;
 	new_path = (t_path *)ft_memalloc(sizeof(t_path));
 	new_path->next = info->paths;
 	tmp_room = last->room;
-	while (tmp_room && ++new_path->room_col && tmp_room->checked == info->us)
+	while (tmp_room != info->start && ++new_path->room_col &&
+			tmp_room->checked == info->us)
 	{
 		new_link = (t_link *)ft_memalloc(sizeof(t_link));
 		new_link->room = tmp_room;
 		new_link->next = new_path->link;
+		if (new_path->link)
+			new_path->link->prev = new_link;
 		new_path->link = new_link;
-		if (tmp_room == info->start)
-			break ;
 		tmp_room = tmp_room->prev;
 	}
-	if (tmp_room == info->start)
+	if (tmp_room == info->start && ++info->col_path)
 		new_path->valid = 1;
+	if (info->paths)
+		info->paths->prev = new_path;
 	info->paths = new_path;
-	info->paths->prev = old_path;
 	g_g ? debug_print_path(info) : 0;
 }
