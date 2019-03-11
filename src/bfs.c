@@ -6,7 +6,7 @@
 /*   By: akorobov <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/04 18:28:47 by akorobov          #+#    #+#             */
-/*   Updated: 2019/03/11 14:09:25 by akorobov         ###   ########.fr       */
+/*   Updated: 2019/03/11 16:35:28 by akorobov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,9 +76,12 @@ void		new_way(t_link *last, t_info *info)
 	new_path = (t_path *)ft_memalloc(sizeof(t_path));
 	new_path->next = info->paths;
 	tmp_room = last->room;
-	while (tmp_room != info->start && ++new_path->room_col &&
-			tmp_room->checked == info->us)
+	while (tmp_room != info->start && ++new_path->room_col)
 	{
+		if (tmp_room->used)
+			break ;
+		else
+			tmp_room->used = 1;
 		new_link = (t_link *)ft_memalloc(sizeof(t_link));
 		new_link->room = tmp_room;
 		new_link->next = new_path->link;
@@ -87,7 +90,7 @@ void		new_way(t_link *last, t_info *info)
 		new_path->link = new_link;
 		tmp_room = tmp_room->prev;
 	}
-	if (tmp_room == info->start && ++info->col_path)
+	if (tmp_room == info->start)
 		new_path->valid = 1;
 	if (info->paths)
 		info->paths->prev = new_path;

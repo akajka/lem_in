@@ -6,7 +6,7 @@
 /*   By: akorobov <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/06 14:41:12 by akorobov          #+#    #+#             */
-/*   Updated: 2019/03/09 22:42:02 by akorobov         ###   ########.fr       */
+/*   Updated: 2019/03/11 15:51:18 by akorobov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,7 @@ void				print_queue(t_info *info)
 	{
 		print_name_room(l->room->name_room, info->max.ts_cols, 1);
 		printf("\033[1;34m%*s %d\033[0m\n", info->max.ts_cols / 4 + 9,
-				"checked:", l->room->checked);
+				"bfs lvl:", l->room->checked);
 		l = l->next;
 	}
 	printf("\n\n");

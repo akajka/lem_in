@@ -6,7 +6,7 @@
 /*   By: akorobov <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/21 11:29:45 by akorobov          #+#    #+#             */
-/*   Updated: 2019/03/11 14:56:26 by akorobov         ###   ########.fr       */
+/*   Updated: 2019/03/11 16:03:31 by akorobov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,7 @@
 typedef struct		s_room
 {
 	int				ant;
+	int				used;
 	int				checked;
 	int				x;
 	int				y;
@@ -82,11 +83,12 @@ void				check_extremity(t_info *info);
 void				init_start(t_info *info);
 t_link				*bfs(t_info *info);
 void				new_way(t_link *last, t_info *info);
-void				ants_go_to_end(t_info *info);
+void				ants_go(t_info *info);
 
 
 t_room				*new_room(t_info *info, char **line);
 void				val_test_room(t_room *rooms, t_room *tmp, int string);
+void				val_test_link(t_room *room_link, t_room *need_room, int string);
 void				new_link(t_room *rooms, t_room *need_room,
 		char *name_link, int string);
 void				get_extremity(t_info *info);

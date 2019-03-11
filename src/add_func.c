@@ -6,7 +6,7 @@
 /*   By: akorobov <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/03 17:48:13 by akorobov          #+#    #+#             */
-/*   Updated: 2019/03/11 14:56:03 by akorobov         ###   ########.fr       */
+/*   Updated: 2019/03/11 15:34:02 by akorobov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,21 +68,13 @@ void		val_test_room(t_room *rooms, t_room *tmp, int string)
 void		val_test_link(t_room *room_link, t_room *need_room, int string)
 {
 	t_link	*nd;
-	t_link	*rl;
 
 	nd = need_room->links;
-	rl = room_link->links;
 	while (nd)
 	{
 		if (nd->room == room_link)
 			print_error('l', string);
 		nd = nd->next;
-	}
-	while (rl)
-	{
-		if (rl->room == need_room)
-			print_error('l', string);
-		rl = rl->next;
 	}
 }
 
@@ -102,7 +94,6 @@ void		new_link(t_room *rooms, t_room *need_room,
 			break ;
 	if (room_link)
 	{
-		val_test_link(room_link, need_room, string);
 		new_link = (t_link *)malloc(sizeof(t_link));
 		new_link->room = room_link;
 		new_link->next = need_room->links;

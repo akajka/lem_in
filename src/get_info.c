@@ -6,7 +6,7 @@
 /*   By: akorobov <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/22 16:54:25 by akorobov          #+#    #+#             */
-/*   Updated: 2019/03/11 14:55:40 by akorobov         ###   ########.fr       */
+/*   Updated: 2019/03/11 16:23:40 by akorobov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,13 +27,11 @@ void		info_link(t_info *info)
 		print_error('!', info->string);
 	while (need_room && ft_strcmp(link[0], need_room->name_room))
 		need_room = need_room->next;
-	if (need_room && link[1])
-		new_link(info->room, need_room, link[1], info->string);
-	else
-	{
-		free_2d(&link);
+	if (!(need_room && link[1]))
 		print_error('n', info->string);
-	}
+	new_link(info->room, need_room, link[1], info->string);
+	val_test_link(need_room, need_room->links->room, info->string);
+	new_link(info->room, need_room->links->room, link[0], info->string);
 	free_2d(&link);
 }
 
