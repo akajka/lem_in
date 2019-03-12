@@ -6,7 +6,7 @@
 /*   By: akorobov <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/04 18:28:47 by akorobov          #+#    #+#             */
-/*   Updated: 2019/03/12 15:34:00 by akorobov         ###   ########.fr       */
+/*   Updated: 2019/03/12 21:56:28 by akorobov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,7 @@ void		pushback_queue(t_info *info, t_link *tmp)
 	new_el->room = tmp->room;
 	new_el->room->prev = info->queue->room;
 	new_el->next = NULL;
+	new_el->prev = last;
 	last->next = new_el;
 }
 
@@ -49,7 +50,7 @@ t_link		*bfs(t_info *info)
 	while (info->queue)
 	{
 		info->queue->room->checked = info->us;
-		g_extended_debug_mode ? print_queue(info) : 0;
+//		DEBUG_EXTENDED ? print_queue(info) : 0;
 		tmp = info->queue->room->links;
 		while (tmp)
 		{
@@ -73,6 +74,7 @@ t_path		*new_path_cr(t_info *info)
 	t_path	*new_path;
 
 	new_path = (t_path *)ft_memalloc(sizeof(t_path));
+	new_path->ness = 0;
 	new_path->next = info->paths;
 	new_link = (t_link *)ft_memalloc(sizeof(t_link));
 	new_link->room = info->end;
@@ -88,12 +90,10 @@ void		new_way(t_link *last, t_info *info)
 
 	new_path = new_path_cr(info);
 	tmp_room = last->room;
-	while (tmp_room != info->start && ++new_path->room_col)
+	while (tmp_room != info->start && ++new_path->room_col
+			&& !tmp_room->used)
 	{
-		if (tmp_room->used)
-			break ;
-		else
-			tmp_room->used = 1;
+		tmp_room->used = 1;
 		new_link = (t_link *)ft_memalloc(sizeof(t_link));
 		new_link->room = tmp_room;
 		new_link->next = new_path->link;

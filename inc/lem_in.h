@@ -6,7 +6,7 @@
 /*   By: akorobov <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/21 11:29:45 by akorobov          #+#    #+#             */
-/*   Updated: 2019/03/12 16:53:08 by akorobov         ###   ########.fr       */
+/*   Updated: 2019/03/12 21:55:58 by akorobov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,18 @@
 #include "libft.h"
 #include <stdio.h>
 #include <sys/ioctl.h>
+
+# ifndef DEBUG
+#	define DEBUG 0
+# endif
+
+#	define DEBUG_EXTENDED 0
+/*# if ! defined DEBUG_EXTENDED
+#	define DEBUG_EXTENDED 0
+# endif
+# if DEBUG_EXTENDED == 1
+#	define DEBUG 1
+# endif*/
 
 # define DEBUG_START_MODE 0
 # define DEBUG_INFO_MODE 1
@@ -82,6 +94,7 @@ typedef struct		s_way
 
 typedef struct		s_info
 {
+	int				col_steps;
 	int				done;
 	int				us;
 	struct ttysize	max;
@@ -105,14 +118,12 @@ typedef struct		s_info
 void				print_error(int error, int string);
 
 
-_Bool				g_debug_mode;
-_Bool				g_extended_debug_mode;
 void				get_info(t_info *info);
 void				get_rooms(t_info *info);
 void				get_link(t_info *info, char **sp, int string);
 void				info_room(t_info *info, char **s);
 void				info_link(t_info *info);
-void				save_file(t_info *info, char *s);
+void				save_file(t_info *info, char **s);
 void				print_file(t_list *file);
 void				check_extremity(t_info *info);
 void				init_start(t_info *info);
@@ -131,7 +142,7 @@ void				ness_use_path(t_info *info);
 /** Debug **/
 
 
-void				debug(int argc, char **argv, t_info *info);
+void				debug(t_info *info);
 void				debug_mode(t_info *info, int mode);
 void				debug_info_room(t_info *info);
 void				print_queue(t_info *info);

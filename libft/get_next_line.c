@@ -6,7 +6,7 @@
 /*   By: akorobov <akorobov@student.unit.ua>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/09 14:28:13 by akorobov          #+#    #+#             */
-/*   Updated: 2019/03/06 16:39:30 by akorobov         ###   ########.fr       */
+/*   Updated: 2019/03/12 21:18:15 by akorobov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,8 +28,8 @@ int				get_next_line(const int fd, char **line)
 		if (buf == '\n')
 		{
 			tmp[count++] = '\0';
-			if (tmp[0] != '\0')
-				*line = ft_strdup(tmp);
+			*line = (char *)ft_memalloc(sizeof(char) * count);
+			ft_strcpy(*line, tmp);
 			return (*line ? 1 : 0);
 		}
 		else

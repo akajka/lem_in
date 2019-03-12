@@ -6,7 +6,7 @@
 /*   By: akorobov <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/03 17:48:13 by akorobov          #+#    #+#             */
-/*   Updated: 2019/03/12 13:37:29 by akorobov         ###   ########.fr       */
+/*   Updated: 2019/03/12 19:37:58 by akorobov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,9 +95,11 @@ void		new_link(t_room *rooms, t_room *need_room,
 			break ;
 	if (room_link)
 	{
-		new_link = (t_link *)malloc(sizeof(t_link));
+		new_link = (t_link *)ft_memalloc(sizeof(t_link));
 		new_link->room = room_link;
 		new_link->next = need_room->links;
+		if (need_room->links)
+			need_room->links->prev = new_link;
 		need_room->links = new_link;
 	}
 	else

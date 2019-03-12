@@ -26,10 +26,14 @@ HEADER_FLAGS = -I $(INC_DIR) -I $(LIBFT_INC)
 CC_FLAGS = -g -Wall -Wextra -Werror 
 CC = gcc
 
+ifneq (${DEBUG_MODE},)
+	DEBUG = -DDEBUG=${DEBUG_MODE}
+endif
+
 all: $(NAME)
 
 $(NAME): $(LIBFT) $(OBJ)
-	@$(CC) $(OBJ) $(LIBFT) -o $(NAME)
+	$(CC) $(OBJ) $(LIBFT) -o $(NAME) 
 	@printf "\033[1;32mlem_in created \033[0m\n"
 
 $(OBJ): | $(OBJ_DIR)
@@ -38,7 +42,7 @@ $(OBJ_DIR):
 	@mkdir $(OBJ_DIR)
 
 $(OBJ_DIR)%.o: $(SRC_DIR)%.c $(HEAD)
-	@$(CC) -c $< -o $@ $(CC_FLAGS) $(HEADER_FLAGS)
+	$(CC) -c $< -o $@ $(CC_FLAGS) $(HEADER_FLAGS) $(DEBUG)
 
 $(LIBFT):
 	@make -C $(LIBFT_DIR)

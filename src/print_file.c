@@ -6,19 +6,19 @@
 /*   By: akorobov <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/04 21:47:41 by akorobov          #+#    #+#             */
-/*   Updated: 2019/03/12 15:42:53 by akorobov         ###   ########.fr       */
+/*   Updated: 2019/03/12 17:45:03 by akorobov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "lem_in.h"
 
-void		save_file(t_info *info, char *str)
+void		save_file(t_info *info, char **str)
 {
 	t_list	*tmp;
 	t_list	*last;
 
 	tmp = (t_list *)malloc(sizeof(t_list));
-	tmp->content = ft_strdup(str);
+	tmp->content = *str;
 	tmp->next = NULL;
 	last = info->file;
 	while (last && last->next)

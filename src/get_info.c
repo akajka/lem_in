@@ -6,7 +6,7 @@
 /*   By: akorobov <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/22 16:54:25 by akorobov          #+#    #+#             */
-/*   Updated: 2019/03/12 15:19:06 by akorobov         ###   ########.fr       */
+/*   Updated: 2019/03/12 21:20:50 by akorobov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,6 +43,7 @@ void		info_room(t_info *info, char **line)
 		print_error(ERROR_COOR_INIT, info->string);
 	tmp = new_room(info, line);
 	val_test_room(info->room, tmp, info->string);
+	info->col_room++;
 	info->room = tmp;
 }
 
@@ -51,7 +52,7 @@ void		get_rooms(t_info *info)
 	char	**split;
 	int		count;
 
-	while (info->line && ++info->string && ++info->col_room)
+	while (info->line && ++info->string)
 	{
 		if (!ft_strcmp("##start", info->line->content) ||
 				!ft_strcmp("##end", info->line->content))
@@ -91,11 +92,8 @@ void		get_info(t_info *info)
 	char	*line;
 
 	info->string = 0;
-	while (get_next_line(0, &line) && line)
-	{
-		save_file(info, line);
-		free(line);
-	}
+	while (get_next_line(0, &line))
+		save_file(info, &line);
 	print_file(info->file);
 	info->line = info->file;
 	while (info->line && info->line->content[0] == '#' &&
