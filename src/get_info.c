@@ -6,7 +6,7 @@
 /*   By: akorobov <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/22 16:54:25 by akorobov          #+#    #+#             */
-/*   Updated: 2019/03/11 18:47:14 by akorobov         ###   ########.fr       */
+/*   Updated: 2019/03/12 15:19:06 by akorobov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,14 +21,14 @@ void		info_link(t_info *info)
 	count = 0;
 	need_room = info->room;
 	if (!ft_strchr(info->line->content, '-'))
-		print_error('L', info->string);
+		print_error(ERROR_LINK_INIT, info->string);
 	link = ft_strsplit(info->line->content, '-');
 	if (!link[0] || !link[1])
-		print_error('!', info->string);
+		print_error(ERROR_LINK_INIT, info->string);
 	while (need_room && ft_strcmp(link[0], need_room->name_room))
 		need_room = need_room->next;
 	if (!(need_room && link[1]))
-		print_error('n', info->string);
+		print_error(ERROR_ROOM_NOT_FOUND, info->string);
 	new_link(info->room, need_room, link[1], info->string);
 	val_test_link(need_room, need_room->links->room, info->string);
 	new_link(info->room, need_room->links->room, link[0], info->string);
@@ -40,7 +40,7 @@ void		info_room(t_info *info, char **line)
 	t_room	*tmp;
 
 	if (!digit_test(line[1]) || !digit_test(line[2]))
-		print_error('c', info->string);
+		print_error(ERROR_COOR_INIT, info->string);
 	tmp = new_room(info, line);
 	val_test_room(info->room, tmp, info->string);
 	info->room = tmp;
@@ -64,7 +64,8 @@ void		get_rooms(t_info *info)
 			{
 				free_2d(&split);
 				ft_strchr(info->line->content, '-') ? 1 :
-					print_error('c', info->string);
+					print_error(ERROR_UNCORRECT_NAME_ROOM,
+							info->string);
 				break ;
 			}
 			info_room(info, split);
@@ -104,7 +105,7 @@ void		get_info(t_info *info)
 	if (info->line && ++info->string && digit_test(info->line->content))
 		info->ants = ft_atoi(info->line->content);
 	if (info->ants <= 0 || info->ants > 22147483647)
-		print_error('a', info->string);
+		print_error(ERROR_ANT_INIT, info->string);
 	info->line = info->line->next;
 	get_rooms(info);
 	get_links(info);

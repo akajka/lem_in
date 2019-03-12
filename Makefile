@@ -11,6 +11,7 @@ SRC = main.c \
 	  print_file.c \
 	  bfs.c \
 	  ants_go_to_end.c \
+	  param_path.c \
 	  debug.c
 
 OBJ = $(addprefix $(OBJ_DIR), $(SRC:.c=.o))
@@ -28,7 +29,7 @@ CC = gcc
 all: $(NAME)
 
 $(NAME): $(LIBFT) $(OBJ)
-	@$(CC) $(OBJ) $(LIBFT) -o $(NAME) 
+	@$(CC) $(OBJ) $(LIBFT) -o $(NAME)
 	@printf "\033[1;32mlem_in created \033[0m\n"
 
 $(OBJ): | $(OBJ_DIR)

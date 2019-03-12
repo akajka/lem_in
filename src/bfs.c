@@ -6,7 +6,7 @@
 /*   By: akorobov <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/04 18:28:47 by akorobov          #+#    #+#             */
-/*   Updated: 2019/03/12 11:38:28 by akorobov         ###   ########.fr       */
+/*   Updated: 2019/03/12 15:34:00 by akorobov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,7 @@ t_link		*bfs(t_info *info)
 	while (info->queue)
 	{
 		info->queue->room->checked = info->us;
-		g_g ? print_queue(info) : 0;
+		g_extended_debug_mode ? print_queue(info) : 0;
 		tmp = info->queue->room->links;
 		while (tmp)
 		{

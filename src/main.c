@@ -6,7 +6,7 @@
 /*   By: akorobov <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/19 17:25:37 by akorobov          #+#    #+#             */
-/*   Updated: 2019/03/12 11:59:40 by akorobov         ###   ########.fr       */
+/*   Updated: 2019/03/12 17:41:16 by akorobov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,9 +27,13 @@ void		debug(int argc, char **argv, t_info *info)
 	i = -1;
 	if (argc >= 2)
 		while (argv[++i])
-			if (ft_strcmp(argv[i], "-g"))
-				g_g = 1;
-	if (g_g)
+		{
+			if (!ft_strcmp(argv[i], "-g"))
+				g_debug_mode = 1;
+			if (!ft_strcmp(argv[i], "-G"))
+				g_extended_debug_mode = 1;
+		}
+	if (g_debug_mode || g_extended_debug_mode)
 	{
 		if (ioctl(1, TIOCGWINSZ , &info->max) == -1)
 			printf("ERROR in ioctl");
@@ -58,7 +62,7 @@ int			main(int argc, char **argv)
 		if (!(info->queue = info->queue->next))
 			break ;
 	}
-	g_g ? debug_print_path(info) : 0;
+	(g_debug_mode || g_extended_debug_mode) ? debug_print_path(info) : 0;
 	if (info->paths)
 		ants_go(info);
 	system("leaks lem_in");

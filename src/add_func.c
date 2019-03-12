@@ -6,7 +6,7 @@
 /*   By: akorobov <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/03 17:48:13 by akorobov          #+#    #+#             */
-/*   Updated: 2019/03/11 15:34:02 by akorobov         ###   ########.fr       */
+/*   Updated: 2019/03/12 13:37:29 by akorobov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,26 +28,27 @@ t_room		*new_room(t_info *info, char **line)
 void		get_extremity(t_info *info)
 {
 	char	**split;
-	char	c;
+	int		er;
 	int		count;
 
 	count = 0;
-	c = info->line->content[2];
+	er = (info->line->content[2] == 's' ? ERROR_START_INIT :
+			ERROR_END_INIT);
 	info->line = info->line->next;
 	if (info->line && ++info->string)
 	{
 		split = ft_strsplit(info->line->content, ' ');
 		if (ft_size2d(split) != 3)
-			print_error(c, info->string);
+			print_error(er, info->string);
 		info_room(info, split);
-		if (c == 's')
+		if (er == ERROR_START_INIT)
 			info->start = info->room;
 		else
 			info->end = info->room;
 		free_2d(&split);
 	}
 	else
-		print_error(c, info->string);
+		print_error(er, info->string);
 }
 
 void		val_test_room(t_room *rooms, t_room *tmp, int string)
@@ -58,9 +59,9 @@ void		val_test_room(t_room *rooms, t_room *tmp, int string)
 	while (test && test->name_room)
 	{
 		if (!ft_strcmp(test->name_room, tmp->name_room))
-			print_error('d', string);
+			print_error(ERROR_REPEAT_ROOM, string);
 		if (test->x == tmp->x && test->y == tmp->y)
-			print_error('Z', string);
+			print_error(ERROR_REPEAT_COOR, string);
 		test = test->next;
 	}
 }
@@ -73,7 +74,7 @@ void		val_test_link(t_room *room_link, t_room *need_room, int string)
 	while (nd)
 	{
 		if (nd->room == room_link)
-			print_error('l', string);
+			print_error(ERROR_VALID_LINK, string);
 		nd = nd->next;
 	}
 }
@@ -85,7 +86,7 @@ void		new_link(t_room *rooms, t_room *need_room,
 	t_link	*new_link;
 
 	if (!ft_strcmp(need_room->name_room, name_link))
-		print_error('l', string);
+		print_error(ERROR_VALID_LINK, string);
 	room_link = rooms;
 	while (room_link)
 		if (ft_strcmp(room_link->name_room, name_link))
@@ -100,5 +101,5 @@ void		new_link(t_room *rooms, t_room *need_room,
 		need_room->links = new_link;
 	}
 	else
-		print_error('l', string);
+		print_error(ERROR_VALID_LINK, string);
 }

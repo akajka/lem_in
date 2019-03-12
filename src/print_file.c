@@ -6,7 +6,7 @@
 /*   By: akorobov <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/04 21:47:41 by akorobov          #+#    #+#             */
-/*   Updated: 2019/03/09 16:41:07 by akorobov         ###   ########.fr       */
+/*   Updated: 2019/03/12 15:42:53 by akorobov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ void		print_file(t_list *file)
 	list = file;
 	i = 0;
 	if (!list)
-		print_error('R', 0);
+		print_error(ERROR_MAP, 0);
 	while (list && ++i)
 	{
 		ft_putnbr(i);
