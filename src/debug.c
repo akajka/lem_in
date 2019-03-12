@@ -6,7 +6,7 @@
 /*   By: akorobov <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/06 14:41:12 by akorobov          #+#    #+#             */
-/*   Updated: 2019/03/12 21:56:28 by akorobov         ###   ########.fr       */
+/*   Updated: 2019/03/12 22:15:41 by akorobov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -115,4 +115,5 @@ void	debug_print_path(t_info *info)
 		}
 		path = path->next;
 	}
+	printf("\n");
 }

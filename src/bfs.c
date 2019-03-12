@@ -6,7 +6,7 @@
 /*   By: akorobov <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/04 18:28:47 by akorobov          #+#    #+#             */
-/*   Updated: 2019/03/12 21:56:28 by akorobov         ###   ########.fr       */
+/*   Updated: 2019/03/12 22:17:25 by akorobov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,7 @@ t_link		*bfs(t_info *info)
 	while (info->queue)
 	{
 		info->queue->room->checked = info->us;
-//		DEBUG_EXTENDED ? print_queue(info) : 0;
+		DEBUG == 2 ? print_queue(info) : 0;
 		tmp = info->queue->room->links;
 		while (tmp)
 		{
@@ -106,4 +106,5 @@ void		new_way(t_link *last, t_info *info)
 	if (info->paths)
 		info->paths->prev = new_path;
 	info->paths = new_path;
+	DEBUG == 2 ? debug_print_path(info) : 0;
 }

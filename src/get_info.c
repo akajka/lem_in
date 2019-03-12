@@ -6,7 +6,7 @@
 /*   By: akorobov <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/22 16:54:25 by akorobov          #+#    #+#             */
-/*   Updated: 2019/03/12 21:20:50 by akorobov         ###   ########.fr       */
+/*   Updated: 2019/03/12 22:14:53 by akorobov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,7 +102,7 @@ void		get_info(t_info *info)
 		info->line = info->line->next;
 	if (info->line && ++info->string && digit_test(info->line->content))
 		info->ants = ft_atoi(info->line->content);
-	if (info->ants <= 0 || info->ants > 22147483647)
+	if (info->ants <= 0 || info->ants > INT_MAX)
 		print_error(ERROR_ANT_INIT, info->string);
 	info->line = info->line->next;
 	get_rooms(info);

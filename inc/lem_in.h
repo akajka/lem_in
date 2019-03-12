@@ -6,7 +6,7 @@
 /*   By: akorobov <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/21 11:29:45 by akorobov          #+#    #+#             */
-/*   Updated: 2019/03/12 21:55:58 by akorobov         ###   ########.fr       */
+/*   Updated: 2019/03/12 22:14:55 by akorobov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,19 +14,12 @@
 # define LEM_IN_H
 #include "libft.h"
 #include <stdio.h>
+#include <limits.h>
 #include <sys/ioctl.h>
 
 # ifndef DEBUG
 #	define DEBUG 0
 # endif
-
-#	define DEBUG_EXTENDED 0
-/*# if ! defined DEBUG_EXTENDED
-#	define DEBUG_EXTENDED 0
-# endif
-# if DEBUG_EXTENDED == 1
-#	define DEBUG 1
-# endif*/
 
 # define DEBUG_START_MODE 0
 # define DEBUG_INFO_MODE 1
