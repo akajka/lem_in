@@ -6,7 +6,7 @@
 /*   By: akorobov <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/19 17:25:37 by akorobov          #+#    #+#             */
-/*   Updated: 2019/03/11 16:03:42 by akorobov         ###   ########.fr       */
+/*   Updated: 2019/03/12 11:59:40 by akorobov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,9 @@ int			main(int argc, char **argv)
 		if (!(info->queue = info->queue->next))
 			break ;
 	}
+	g_g ? debug_print_path(info) : 0;
 	if (info->paths)
 		ants_go(info);
+	system("leaks lem_in");
 	return (0);
 }

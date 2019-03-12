@@ -6,7 +6,7 @@
 /*   By: akorobov <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/21 11:29:45 by akorobov          #+#    #+#             */
-/*   Updated: 2019/03/11 16:03:31 by akorobov         ###   ########.fr       */
+/*   Updated: 2019/03/12 12:02:16 by akorobov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,6 +50,12 @@ typedef struct		s_path
 	struct s_path	*prev;
 }					t_path;
 
+typedef struct		s_way
+{
+	t_link			*link;
+	t_path			*path;
+}					t_way;
+
 typedef struct		s_info
 {
 	int				done;
@@ -64,6 +70,7 @@ typedef struct		s_info
 	t_room			*start;
 	t_room			*end;
 	t_room			*room;
+	t_way			*ant_during_way;
 	t_link			*queue;
 	t_link			*q;
 	t_path			*paths;

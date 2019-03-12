@@ -6,31 +6,38 @@
 /*   By: akorobov <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/09 22:39:26 by akorobov          #+#    #+#             */
-/*   Updated: 2019/03/11 17:27:21 by akorobov         ###   ########.fr       */
+/*   Updated: 2019/03/12 13:10:39 by akorobov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "lem_in.h"
 
-void	ant_go_to_the_next_room_in_this_way(t_info *info,
-		t_path *path, int ant)
+void	ant_go_to_the_next_room(t_info *info, int ant, t_path *tmp)
 {
-	t_link	*link;
+	int	j;
 
-	link = path->link;
-	link->room->ant = ant;
-	info->done = 0;
-	if (link->next)
-		while (link->next && link->room->ant)
-			link = link->next;
-	else
-		
-	while (link && (link = link->prev))
+	j = 0;
+	while (j++ > ant)
 	{
-		if (link->next)
-			link->next->room->ant = link->room->ant;
-		printf("L%d-%s ", link->room->ant, link->room->name_room);
+		if (info->ant_during_way[j].link->next &&
+				info->ant_during_way[j].path == tmp)
+		{
+			info->ant_during_way[j].link =
+				info->ant_during_way[j].link->next;
+			write(1, "L", 1);
+			ft_putnbr(j);
+			write(1, "-", 1);
+			ft_putstr(info->ant_during_way[j].link->room->name_room);	
+			write(1, " ", 1);
+		}
 	}
+	info->ant_during_way[ant - 1].path = tmp;
+	info->ant_during_way[ant - 1].link = tmp->link;
+	write(1, "L", 1);
+	ft_putnbr(ant);
+	write(1, "-", 1);
+	ft_putstr(info->ant_during_way[ant - 1].link->room->name_room);
+	write(1, " ", 1);
 }
 
 int			*init_len(t_info *info)
@@ -77,53 +84,52 @@ void		ness_use_path(t_info *info)
 
 void		ants_go_to_end(t_info *info)
 {
-	t_path	*path;
-	t_link	*link;
+	int		j;
 
-	path = info->start_path;
-	while (path)
+	info->done = 0;
+	while (!info->done)
 	{
-		if (path->valid)
+		info->done = 0;
+		j = -1;
+		while (++j < info->ants)
 		{
-			link = path->link;
-			while (link && link->room->ant)
-				link = link->next;
-			while (link && (link = link->prev))
+			if (info->ant_during_way[j].link)
 			{
-				if (link->next)
-					link->next->room->ant = link->room->ant;
-				printf("L%d-%s ", link->room->ant, link->room->name_room);
+				info->ant_during_way[j].link = info->ant_during_way[j].link->next;
+				info->done = 1;
+				write(1, "L", 1);
+				ft_putnbr(j + 1);
+				write(1, "-", 1);
+				ft_putstr(info->ant_during_way[j].link->room->name_room);	
+				write(1, " ", 1);
 			}
 		}
-		path = path->prev;
 	}
-	exit(1);
+	write(1, "\n", 1);
 }
 
 void		ants_go(t_info *info)
 {
 	int		ant;
-	int		counter;
-	t_path	*path;
+	t_path	*tmp;
 
 	ant = 0;
-	counter = 0;
 	ness_use_path(info);
-	while (1)
+	info->ant_during_way =
+		(t_way *)malloc(sizeof(t_way) * info->ants);
+	while (!info->done)
 	{
-		path = info->start_path;
-		while (path)
+		info->done = 1;
+		tmp = info->start_path;
+		while (tmp && ant < info->ants)
 		{
-			if (path->valid && ++ant)
+			if (tmp->valid && info->ants - ant > tmp->ness && ++ant)
 			{
-				path->link->room->ant = ant;
-				if (info->ants - ant > path->ness)
-					ant_go_to_the_next_room_in_this_way(info, path, ant);
-				else
-					ants_go_to_end(info);
+				info->done = 0;
+				ant_go_to_the_next_room(info, ant, tmp);
 			}
-			path = path->prev;
+			tmp = tmp->prev;
 		}
-		printf("\n");
 	}
+	ants_go_to_end(info);
 }
