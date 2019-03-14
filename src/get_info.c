@@ -6,7 +6,7 @@
 /*   By: akorobov <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/22 16:54:25 by akorobov          #+#    #+#             */
-/*   Updated: 2019/03/12 22:14:53 by akorobov         ###   ########.fr       */
+/*   Updated: 2019/03/14 18:20:30 by akorobov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,8 +30,10 @@ void		info_link(t_info *info)
 	if (!(need_room && link[1]))
 		print_error(ERROR_ROOM_NOT_FOUND, info->string);
 	new_link(info->room, need_room, link[1], info->string);
+	++need_room->p;
 	val_test_link(need_room, need_room->links->room, info->string);
 	new_link(info->room, need_room->links->room, link[0], info->string);
+	++need_room->links->room->p;
 	free_2d(&link);
 }
 
@@ -92,10 +94,13 @@ void		get_info(t_info *info)
 	char	*line;
 
 	info->string = 0;
+	info->file = (t_list *)ft_memalloc(sizeof(t_list));
+	if (!get_next_line(0, &info->file->content))
+		print_error(ERROR_MAP, 0);
 	while (get_next_line(0, &line))
 		save_file(info, &line);
-	print_file(info->file);
 	info->line = info->file;
+	print_file(info->line);
 	while (info->line && info->line->content[0] == '#' &&
 			(info->line->content[1] ?
 			info->line->content[1] != '#' : 1) && ++info->string)

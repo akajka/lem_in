@@ -6,7 +6,7 @@
 /*   By: akorobov <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/21 11:29:45 by akorobov          #+#    #+#             */
-/*   Updated: 2019/03/12 22:14:55 by akorobov         ###   ########.fr       */
+/*   Updated: 2019/03/14 21:56:28 by akorobov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,18 +37,19 @@
 # define ERROR_REPEAT_COOR 8
 # define ERROR_UNCORRECT_NAME_ROOM 9
 # define ERROR_PATH_NOT_FOUND 10
-# define ERROR_MAP 11
-
+# define ERROR_ALLOC_MEMORY 11
+# define ERROR_MAP 12
 
 
 typedef struct		s_room
 {
+	int				p;
 	int				ant;
-	int				used;
 	int				checked;
 	int				x;
 	int				y;
 	char			*name_room;
+	struct s_lock	*locked;
 	struct s_link	*links;
 	struct s_room	*next;
 	struct s_room	*prev;
@@ -64,12 +65,21 @@ typedef struct		s_link
 }					t_link;
 
 
+typedef struct		s_lock
+{
+	struct s_path	*path;
+	struct s_lock	*next;
+}					t_lock;
+
 
 typedef struct		s_path
 {
 	int				ness;
 	int				valid;
 	int				room_col;
+	int				id;
+	t_lock			*locked;
+	int				sum_not_compatible;
 	t_link			*link;
 	struct s_path	*next;
 	struct s_path	*prev;
@@ -84,25 +94,40 @@ typedef struct		s_way
 }					t_way;
 
 
+typedef struct		s_step
+{
+	int				need_step;
+	int				show_step;
+	int				col_steps;
+}					t_step;
+
 
 typedef struct		s_info
 {
-	int				col_steps;
-	int				done;
-	int				us;
+	t_step			*step;
 	struct ttysize	max;
+	
+	long int		ants;
+	int				fast_end;
+	int				sum_start_link;
+	int				done;
+	int				main_id;
 	int				col_path;
 	int				col_room;
-	long int		ants;
+	int				string;
+	
 	t_list			*file;
 	t_list			*line;
-	int				string;
+	
 	t_room			*start;
 	t_room			*end;
 	t_room			*room;
+	
 	t_way			*ant_during_way;
+
 	t_link			*queue;
 	t_link			*q;
+
 	t_path			*paths;
 	t_path			*start_path;
 }					t_info;
@@ -130,6 +155,8 @@ void				new_link(t_room *rooms, t_room *need_room,
 		char *name_link, int string);
 void				get_extremity(t_info *info);
 void				ness_use_path(t_info *info);
+void				fast_end(t_info *info);
+void				introduction_room(t_room *cur_room, t_path *cur_path);
 
 
 /** Debug **/
@@ -138,7 +165,7 @@ void				ness_use_path(t_info *info);
 void				debug(t_info *info);
 void				debug_mode(t_info *info, int mode);
 void				debug_info_room(t_info *info);
-void				print_queue(t_info *info);
+void				debug_print_queue(t_info *info);
 void				debug_print_path(t_info *info);
 void				print_name_room(char *name_room,
 		int winsize, int description);

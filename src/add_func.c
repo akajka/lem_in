@@ -6,7 +6,7 @@
 /*   By: akorobov <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/03 17:48:13 by akorobov          #+#    #+#             */
-/*   Updated: 2019/03/12 19:37:58 by akorobov         ###   ########.fr       */
+/*   Updated: 2019/03/13 14:59:10 by akorobov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,9 +16,11 @@ t_room		*new_room(t_info *info, char **line)
 {
 	t_room	*tmp;
 
-	tmp = (t_room *)malloc(sizeof(t_room));
+	if (!(tmp = (t_room *)ft_memalloc(sizeof(t_room))))
+		print_error(ERROR_ALLOC_MEMORY, info->string);
 	tmp->next = info->room;
-	tmp->name_room = ft_strdup(line[0]);
+	if (!(tmp->name_room = ft_strdup(line[0])))
+		print_error(ERROR_ALLOC_MEMORY, info->string);
 	tmp->y = ft_atoi(line[1]);
 	tmp->x = ft_atoi(line[2]);
 	tmp->links = NULL;
@@ -37,6 +39,8 @@ void		get_extremity(t_info *info)
 	info->line = info->line->next;
 	if (info->line && ++info->string)
 	{
+		while (info->line->content && info->line->content[0] == '#')
+			info->line = info->line->next;
 		split = ft_strsplit(info->line->content, ' ');
 		if (ft_size2d(split) != 3)
 			print_error(er, info->string);
@@ -95,7 +99,8 @@ void		new_link(t_room *rooms, t_room *need_room,
 			break ;
 	if (room_link)
 	{
-		new_link = (t_link *)ft_memalloc(sizeof(t_link));
+		if (!(new_link = (t_link *)ft_memalloc(sizeof(t_link))))
+			print_error(ERROR_ALLOC_MEMORY, string);
 		new_link->room = room_link;
 		new_link->next = need_room->links;
 		if (need_room->links)

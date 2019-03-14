@@ -6,7 +6,7 @@
 /*   By: akorobov <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/10/25 10:02:37 by akorobov          #+#    #+#             */
-/*   Updated: 2019/03/04 22:29:57 by akorobov         ###   ########.fr       */
+/*   Updated: 2019/03/13 14:05:05 by akorobov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,7 @@ typedef struct		s_list
 	char			*content;
 	size_t			content_size;
 	struct s_list	*next;
+	struct s_list	*prev;
 }					t_list;
 
 int					digit_test(char *s);

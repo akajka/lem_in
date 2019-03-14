@@ -6,13 +6,13 @@
 /*   By: akorobov <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/09 22:39:26 by akorobov          #+#    #+#             */
-/*   Updated: 2019/03/12 20:58:04 by akorobov         ###   ########.fr       */
+/*   Updated: 2019/03/14 17:29:08 by akorobov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "lem_in.h"
 
-void	print_step(t_way ant, int ant_nbr)
+void		print_step(t_way ant, int ant_nbr)
 {
 	write(1, "L", 1);
 	ft_putnbr(ant_nbr);
@@ -21,9 +21,9 @@ void	print_step(t_way ant, int ant_nbr)
 	write(1, " ", 1);
 }
 
-void	ant_go_to_the_next_room(t_info *info, int ant)
+void		ant_go_to_the_next_room(t_info *info, int ant)
 {
-	int	i;
+	int		i;
 
 	i = -1;
 	while (++i < ant)
@@ -37,22 +37,37 @@ void	ant_go_to_the_next_room(t_info *info, int ant)
 	}
 }
 
+void		fast_end(t_info *info)
+{
+	int		i;
+
+	i = 0;
+	while (++i <= info->ants)
+	{
+		write(1, "L", 1);
+		ft_putnbr(i + 1);
+		write(1, "-", 1);
+		ft_putstr(info->end->name_room);
+		write(1, " ", 1);
+	}
+	write(1, "\n", 1);
+}
+
 void		ants_go(t_info *info)
 {
 	int		ant;
 	t_path	*tmp;
 
 	ant = 0;
+	DEBUG == 1 ? debug_print_path(info) : 0;
 	ness_use_path(info);
-	info->ant_during_way = (t_way *)ft_memalloc(sizeof(t_way) * info->ants);
-	while (!info->done)
+	while (!info->done && ++info->done)
 	{
-		info->done = 1;
 		tmp = info->start_path;
 		ant ? ant_go_to_the_next_room(info, ant) : 0;
 		while (tmp && ant < info->ants)
 		{
-			if (tmp->valid && info->ants - ant > tmp->ness)
+			if (info->ants - ant > tmp->ness)
 			{
 				info->done = 0;
 				info->ant_during_way[ant].path = tmp;
@@ -62,7 +77,7 @@ void		ants_go(t_info *info)
 			}
 			tmp = tmp->prev;
 		}
-		info->col_steps++;
-		write(1, "\n", 1);
+		!info->done ? write(1, "\n", 1) : 0;
+		info->step && !info->done ? info->step->col_steps++ : 0;
 	}
 }

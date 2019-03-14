@@ -5,10 +5,10 @@ OBJ_DIR = ./obj/
 INC_DIR = ./inc/
 
 SRC = main.c \
-	  error.c \
 	  get_info.c \
-	  add_func.c \
+	  error.c \
 	  print_file.c \
+	  add_func.c \
 	  bfs.c \
 	  ants_go_to_end.c \
 	  param_path.c \
@@ -23,7 +23,7 @@ HEAD = $(INC_DIR)lem_in.h
 
 HEADER_FLAGS = -I $(INC_DIR) -I $(LIBFT_INC)
 
-CC_FLAGS = -g -Wall -Wextra -Werror 
+CC_FLAGS = -O3 -Wall -Wextra -Werror
 CC = gcc
 
 ifneq (${DEBUG_MODE},)
@@ -42,7 +42,7 @@ $(OBJ_DIR):
 	@mkdir $(OBJ_DIR)
 
 $(OBJ_DIR)%.o: $(SRC_DIR)%.c $(HEAD)
-	$(CC) -c $< -o $@ $(CC_FLAGS) $(HEADER_FLAGS) $(DEBUG)
+	$(CC) -c  $< -o $@ $(CC_FLAGS) $(HEADER_FLAGS) $(DEBUG) 
 
 $(LIBFT):
 	@make -C $(LIBFT_DIR)
