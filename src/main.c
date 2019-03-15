@@ -6,7 +6,7 @@
 /*   By: akorobov <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/19 17:25:37 by akorobov          #+#    #+#             */
-/*   Updated: 2019/03/15 15:47:38 by akorobov         ###   ########.fr       */
+/*   Updated: 2019/03/15 22:41:08 by akorobov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,30 +53,58 @@ void		debug(t_info *info)
 	debug_info_room(info);
 }
 
-void		sort_path(t_info *info)
+int			locked_path(t_path *cur, t_path *all_paths, int i)
 {
-	t_path	*tmp;
-	t_path	*thebestway;
+	int		ret;
 	t_lock	*lock;
+	t_path	*tmp;
 
-	tmp = info->paths;
-	thebestway = info->start_path;
+	tmp = cur;
+	lock = cur->locked;
+	ret = cur->sum_not_compatible;
+	while (lock)
+	{
+		lock->path->test = i;
+		lock = lock->next;
+	}
+	printf("ret path - %d\n", ret);
+	tmp = all_paths; 
 	while (tmp)
 	{
-		if (tmp->sum_not_compatible < thebestway->sum_not_compatible)
-			thebestway = tmp;
-		tmp = tmp->next;
+		if (tmp->test != i)
+		{
+			lock = tmp->locked;
+			while (lock)
+			{
+				if (lock->path->test != i)
+					lock->path->test = i;
+				else
+					ret++;
+				lock = lock->next;
+			}
+		}
+		tmp = tmp->prev;
 	}
-	lock = thebestway->locked;
+	printf("lock path - %d\n", ret);
+	return (ret);
+}
+
+
+void		locking(t_path *path, t_path *start_path)
+{
+	t_lock	*lock;
+	t_path	*tmp;
+
+	lock = path->locked;
 	while (lock)
 	{
 		lock->path->valid = 0;
 		lock = lock->next;
 	}
-	tmp = info->start_path;
+	tmp = start_path;
 	while (tmp)
 	{
-		if (tmp->valid && ++info->col_val_path)
+		if (tmp->valid)
 		{
 			lock = tmp->locked;
 			while (lock)
@@ -85,8 +113,40 @@ void		sort_path(t_info *info)
 				lock = lock->next;
 			}
 		}
-		tmp = tmp->next;
+		tmp = tmp->prev;
 	}
+}
+
+void		sort_path(t_info *info)
+{
+	int		i;
+	int		best_ret;
+	int		cur_res;
+	t_path	*tmp;
+	t_path	*thebestway;
+
+	i = 1;
+	tmp = info->start_path;
+	thebestway = tmp;
+	best_ret = -1;
+	while (tmp)
+	{
+		if ((cur_res = locked_path(tmp, info->start_path, i++)) <= best_ret &&
+				|| best_ret == -1)
+		{
+			best_ret = cur_res;
+			thebestway = tmp;
+			printf("now is best - result - %d; id - %d\n",best_ret, thebestway->id);
+		}
+		else
+		{
+			printf("current - result - %d; id - %d\n", cur_res, tmp->id);	
+			printf("now is best - result - %d; id - %d\n",best_ret, thebestway->id);	
+		}
+		sleep(2);
+		tmp = tmp->prev;
+	}
+	locking(thebestway, info->start_path);
 }
 
 void		result(t_info *info)
@@ -102,8 +162,13 @@ void		result(t_info *info)
 	else
 		fast_end(info);
 	if (info->step)
-		printf("\nAnts - %ld\nNeed steps - %d\nSteps - %d\nSum paths %d\nSum val path %d\n",
-				info->ants, info->step->need_step, info->step->col_steps, info->col_path, info->col_val_path);
+	{
+		printf("\nAnts - %ld\n", info->ants);
+		printf("Need steps - %d\n", info->step->need_step);
+		printf("Steps - %d\n", info->step->col_steps);
+		printf("Sum paths- %d\n", info->col_path);
+		printf("Sum valid paths - %d\n", info->col_val_path);
+	}
 }
 
 int			main(int argc, char **argv)

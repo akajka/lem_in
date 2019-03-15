@@ -6,7 +6,7 @@
 /*   By: akorobov <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/21 11:29:45 by akorobov          #+#    #+#             */
-/*   Updated: 2019/03/15 15:44:27 by akorobov         ###   ########.fr       */
+/*   Updated: 2019/03/15 20:38:26 by akorobov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,6 +81,7 @@ typedef struct		s_lock
 
 typedef struct		s_path
 {
+	int				test;
 	int				ness;
 	int				valid;
 	int				room_col;

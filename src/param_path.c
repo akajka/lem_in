@@ -6,7 +6,7 @@
 /*   By: akorobov <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/12 13:57:50 by akorobov          #+#    #+#             */
-/*   Updated: 2019/03/15 15:38:28 by akorobov         ###   ########.fr       */
+/*   Updated: 2019/03/15 19:45:55 by akorobov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,7 @@ void		ness_use_path(t_info *info)
 	while (path)
 	{
 		j = -1;
-		if (path->valid)
+		if (path->valid && ++info->col_val_path)
 		{
 			while (++j != i)
 				path->ness += len[i] - len[j];

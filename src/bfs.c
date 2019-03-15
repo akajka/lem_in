@@ -6,7 +6,7 @@
 /*   By: akorobov <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/04 18:28:47 by akorobov          #+#    #+#             */
-/*   Updated: 2019/03/15 14:47:51 by akorobov         ###   ########.fr       */
+/*   Updated: 2019/03/15 22:41:11 by akorobov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,7 @@ t_link		*bfs(t_info *info)
 		{
 			if (tmp->room == info->end)
 				return (info->queue->link);
-			if (!tmp->room->checked)
+			if (!tmp->room->checked && tmp->room->links)
 				pushback_queue(info, tmp);
 			tmp = tmp->next;
 		}
@@ -92,5 +92,5 @@ void		new_way(t_link *last, t_info *info)
 	info->paths ? info->paths->prev = new_path : 0;
 	info->paths = new_path;
 	DEBUG == 2 ? debug_print_path(info) : 0;
-	DEBUG == 2 ? sleep(1) : 0;
+	DEBUG == 2 ? sleep(10) : 0;
 }
