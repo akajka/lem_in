@@ -6,7 +6,7 @@
 /*   By: akorobov <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/21 11:29:45 by akorobov          #+#    #+#             */
-/*   Updated: 2019/03/14 21:56:28 by akorobov         ###   ########.fr       */
+/*   Updated: 2019/03/15 15:44:27 by akorobov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,6 @@ typedef struct		s_room
 	struct s_lock	*locked;
 	struct s_link	*links;
 	struct s_room	*next;
-	struct s_room	*prev;
 }					t_room;
 
 
@@ -65,10 +64,18 @@ typedef struct		s_link
 }					t_link;
 
 
+typedef struct		s_queue
+{
+	t_link			*link;
+	struct s_queue	*next;
+	struct s_queue	*prev;
+}					t_queue;
+
 typedef struct		s_lock
 {
 	struct s_path	*path;
 	struct s_lock	*next;
+	struct s_lock	*prev;
 }					t_lock;
 
 
@@ -113,6 +120,7 @@ typedef struct		s_info
 	int				done;
 	int				main_id;
 	int				col_path;
+	int				col_val_path;
 	int				col_room;
 	int				string;
 	
@@ -125,8 +133,8 @@ typedef struct		s_info
 	
 	t_way			*ant_during_way;
 
-	t_link			*queue;
-	t_link			*q;
+	t_queue			*queue;
+	t_queue			*q;
 
 	t_path			*paths;
 	t_path			*start_path;

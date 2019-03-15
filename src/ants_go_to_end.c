@@ -6,7 +6,7 @@
 /*   By: akorobov <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/09 22:39:26 by akorobov          #+#    #+#             */
-/*   Updated: 2019/03/14 17:29:08 by akorobov         ###   ########.fr       */
+/*   Updated: 2019/03/15 10:50:36 by akorobov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,7 +67,7 @@ void		ants_go(t_info *info)
 		ant ? ant_go_to_the_next_room(info, ant) : 0;
 		while (tmp && ant < info->ants)
 		{
-			if (info->ants - ant > tmp->ness)
+			if (tmp->valid && info->ants - ant > tmp->ness)
 			{
 				info->done = 0;
 				info->ant_during_way[ant].path = tmp;

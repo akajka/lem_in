@@ -6,7 +6,7 @@
 /*   By: akorobov <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/12 13:57:50 by akorobov          #+#    #+#             */
-/*   Updated: 2019/03/14 22:02:21 by akorobov         ###   ########.fr       */
+/*   Updated: 2019/03/15 15:38:28 by akorobov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,16 +77,15 @@ void		ban(t_room *room, t_path *path)
 	t_lock	*l_not_val_path;
 
 	lpath = room->locked;
-	l_not_val_path = path->locked;
 	while (lpath)
 	{
+		l_not_val_path = path->locked;
 		while (l_not_val_path)
 		{
 			if (l_not_val_path->path == lpath->path)
 				break ;
 			l_not_val_path = l_not_val_path->next;
 		}
-		l_not_val_path = path->locked;
 		if (!l_not_val_path)
 			add_lock(path, lpath->path);
 		lpath = lpath->next;

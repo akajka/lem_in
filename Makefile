@@ -23,7 +23,7 @@ HEAD = $(INC_DIR)lem_in.h
 
 HEADER_FLAGS = -I $(INC_DIR) -I $(LIBFT_INC)
 
-CC_FLAGS = -O3 -Wall -Wextra -Werror
+CC_FLAGS = -g -Wall -Wextra -Werror
 CC = gcc
 
 ifneq (${DEBUG_MODE},)

@@ -6,7 +6,7 @@
 /*   By: akorobov <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/19 17:25:37 by akorobov          #+#    #+#             */
-/*   Updated: 2019/03/14 21:52:17 by akorobov         ###   ########.fr       */
+/*   Updated: 2019/03/15 15:47:38 by akorobov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,7 @@ void		sort_path(t_info *info)
 	t_lock	*lock;
 
 	tmp = info->paths;
-	thebestway = info->paths;
+	thebestway = info->start_path;
 	while (tmp)
 	{
 		if (tmp->sum_not_compatible < thebestway->sum_not_compatible)
@@ -73,21 +73,37 @@ void		sort_path(t_info *info)
 		lock->path->valid = 0;
 		lock = lock->next;
 	}
+	tmp = info->start_path;
+	while (tmp)
+	{
+		if (tmp->valid && ++info->col_val_path)
+		{
+			lock = tmp->locked;
+			while (lock)
+			{
+				lock->path->valid = 0;
+				lock = lock->next;
+			}
+		}
+		tmp = tmp->next;
+	}
 }
 
 void		result(t_info *info)
 {
+	debug_info_room(info);
 	if (!info->fast_end)
 	{
 		info->paths ? sort_path(info) : print_error(ERROR_PATH_NOT_FOUND,
 				info->string);
+		DEBUG == 2 ? debug_print_path(info) : 0;
 		ants_go(info);
 	}
 	else
 		fast_end(info);
 	if (info->step)
-		printf("\nAnts - %ld\nNeed steps - %d\nSteps - %d\n",
-				info->ants, info->step->need_step, info->step->col_steps);
+		printf("\nAnts - %ld\nNeed steps - %d\nSteps - %d\nSum paths %d\nSum val path %d\n",
+				info->ants, info->step->need_step, info->step->col_steps, info->col_path, info->col_val_path);
 }
 
 int			main(int argc, char **argv)
@@ -100,8 +116,9 @@ int			main(int argc, char **argv)
 	get_info(info);
 	check_extremity(info);
 	DEBUG ? debug(info) : 0;
-	info->queue = (t_link *)ft_memalloc(sizeof(t_link));
-	info->queue->room = info->start;
+	info->queue = (t_queue *)ft_memalloc(sizeof(t_queue));
+	info->queue->link = (t_link *)ft_memalloc(sizeof(t_link));
+	info->queue->link->room = info->start;
 	info->q = info->queue;
 	while ((link_to_end = bfs(info)))
 	{
