@@ -6,7 +6,7 @@
 /*   By: akorobov <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/04 18:28:47 by akorobov          #+#    #+#             */
-/*   Updated: 2019/03/15 22:41:11 by akorobov         ###   ########.fr       */
+/*   Updated: 2019/03/16 21:09:08 by akorobov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,7 +90,8 @@ void		new_way(t_link *last, t_info *info)
 		tmp_link = tmp_link->prev;
 	}
 	info->paths ? info->paths->prev = new_path : 0;
+	info->total_length += new_path->room_col;
 	info->paths = new_path;
 	DEBUG == 2 ? debug_print_path(info) : 0;
-	DEBUG == 2 ? sleep(10) : 0;
+	DEBUG == 2 ? sleep(15) : 0;
 }

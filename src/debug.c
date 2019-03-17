@@ -6,7 +6,7 @@
 /*   By: akorobov <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/06 14:41:12 by akorobov          #+#    #+#             */
-/*   Updated: 2019/03/15 15:09:26 by akorobov         ###   ########.fr       */
+/*   Updated: 2019/03/16 18:19:26 by akorobov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,36 +26,6 @@ void				debug_mode(t_info *info, int mode)
 	printf("\033[1;34m%*s\n\n\n\033[0m", place, mods[mode]);
 }
 
-void				print_name_room(char *name_room, int win, int description)
-{
-	if (description == 0)
-		printf("\n\033[1;35m%*s%*s%*s\033[0m\n", win / 4 + 10,
-				"name room", win / 2 - win / 4 - 8, "---",
-				win / 4 - 7, name_room);
-	else if (description == -1)
-		printf("\033[1;34m%*s%*s%*s\033[0m\n", win / 4 + 20,
-				"next room link name", win / 2 - win / 4 - 18, "---",
-				win / 4 - 7, name_room);
-	else if (description == 1)
-		printf("\033[1;34m%*s%*s%*s\033[0m\n", win / 4 + 14,
-				"elem in queue", win / 2 - win / 4 - 12, "---",
-				win / 4 - 7, name_room);
-	else if (description == 2)
-		printf("\033[1;34m%*s%*s%*s\033[0m\n", win / 4 + 13,
-				"elem in path", win / 2 - win / 4 - 11, "---",
-				win / 4 - 7, name_room);
-	else if (description == 4)
-		printf("\033[1;31m%*s%*s%*s\033[0m\n", win / 4 + 10,
-				"prev link", win / 2 - win / 4 - 8, "---",
-				win / 4 - 7, name_room);
-	else if (description == 5)
-		printf("\033[1;31m%*s%s\033[0m\n", win / 4 + 13,
-				"used by id_", name_room);
-	else if (description == -2)
-		printf("\033[1;35m%*s\033[0m\n", win / 4 + 6,
-				"PATH:");
-}
-
 void				debug_print_queue(t_info *info)
 {
 	t_queue			*l;
@@ -64,54 +34,34 @@ void				debug_print_queue(t_info *info)
 	debug_mode(info, DEBUG_QUEUE_MODE);
 	while (l)
 	{
-		print_name_room(l->link->room->name_room, info->max.ts_cols, 1);
+		print_elem_str(l->link->room->name_room,
+				info->max.ts_cols, DEBUG_QUEUE_ITEM);
 		if (l->link->prev)
-			print_name_room(l->link->prev->room->name_room, info->max.ts_cols, 4);
+			print_elem_str(l->link->prev->room->name_room,
+					info->max.ts_cols, DEBUG_PREVIOS_ROOM);
 		else
-			print_name_room("missing", info->max.ts_cols, 4);
+			print_elem_str("missing",
+					info->max.ts_cols, DEBUG_PREVIOS_ROOM);
 		l = l->next;
 	}
 	printf("\n\n");
-	sleep(1);
 }
 
 void				debug_info_room(t_info *info)
 {
 	t_room			*tmp;
-	t_link			*link;
-	t_lock			*lockroom;
 
 	tmp = info->room;
 	debug_mode(info, DEBUG_INFO_MODE);
-	printf("\n\033[1;34m%*s%*i\033[0m\n",
-			info->max.ts_cols / 4 + 19,
-			"Amount of rooms = ", 2, info->col_room - 1);
-	printf("\033[1;35m%*s %d\033[0m\n", info->max.ts_cols / 4 + 47,
-			"The sum of references to the starting point = ", info->sum_start_link);
-	DEBUG == 2 ? sleep(2) : 0;
+	print_elem_nbr(info->col_room,
+			info->max.ts_cols, DEBUG_NUMBER_OF_ROOMS);
+	print_elem_nbr(info->sum_start_link,
+			info->max.ts_cols, DEBUG_LINKS_START);
 	while (tmp)
 	{
-		lockroom = tmp->locked;
-		link = tmp->links;
-		print_name_room(tmp->name_room, info->max.ts_cols, 0);
-		printf("\033[35m%*s %d\033[0m\n", info->max.ts_cols / 4 + 10,
-				"col links", tmp->p);
-		if (link)
-			while (link)
-			{
-				print_name_room(link->room->name_room, info->max.ts_cols, -1);
-				link = link->next;
-			}
-		else
-			print_name_room("missing", info->max.ts_cols, -1);
-		if (lockroom)
-			while (lockroom)
-			{
-				print_name_room(ft_itoa(lockroom->path->id), info->max.ts_cols, 5);
-				lockroom = lockroom->next;
-			}
-		else
-			print_name_room("missing", info->max.ts_cols, -1);
+		print_elem_str(tmp->name_room, info->max.ts_cols, DEBUG_NAME_ROOM);
+		print_elem_nbr(tmp->p, info->max.ts_cols, DEBUG_NUMBER_OF_LINKS);
+		print_info(info, tmp->links, tmp->locked, DEBUG_ID);
 		tmp = tmp->next;
 	}
 	printf("\n\n");
@@ -120,8 +70,6 @@ void				debug_info_room(t_info *info)
 void				debug_print_path(t_info *info)
 {
 	t_path			*path;
-	t_link			*link;
-	t_lock			*lockroom;
 
 	debug_mode(info, DEBUG_PATHS_MODE);
 	path = info->paths;
@@ -129,26 +77,10 @@ void				debug_print_path(t_info *info)
 	{
 		if (path->valid)
 		{
-		print_name_room(NULL, info->max.ts_cols, -2);
-		printf("\033[1;35m%*s %d\033[0m\n", info->max.ts_cols / 4 + 8,
-				"Lenght:", path->room_col);
-		printf("\033[1;31m%*s%d\033[0m\n", info->max.ts_cols / 4 + 5,
-				"id_", path->id);
-
-		lockroom = path->locked;
-		link = path->link;
-		while (link)
-		{
-			print_name_room(link->room->name_room, info->max.ts_cols, 2);
-			link = link->next;
-		}
-		while (lockroom)
-		{
-			printf("\033[1;31m%*s%d\033[0m\n", info->max.ts_cols / 4 + 13,
-				"conflict id_", lockroom->path->id);
-			lockroom = lockroom->next;
-		}
-		printf("\n");
+			print_elem_str("", info->max.ts_cols, DEBUG_PATH);
+			print_elem_nbr(path->id, info->max.ts_cols, DEBUG_ID);
+			print_elem_nbr(path->room_col, info->max.ts_cols, DEBUG_LENGTH);
+			print_info(info, path->link, path->locked, DEBUG_ID_CONFLICT);
 		}
 		path = path->next;
 	}

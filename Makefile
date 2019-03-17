@@ -12,7 +12,9 @@ SRC = main.c \
 	  bfs.c \
 	  ants_go_to_end.c \
 	  param_path.c \
-	  debug.c
+	  locking.c \
+	  debug.c \
+	  debug_2.c
 
 OBJ = $(addprefix $(OBJ_DIR), $(SRC:.c=.o))
 

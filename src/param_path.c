@@ -6,7 +6,7 @@
 /*   By: akorobov <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/12 13:57:50 by akorobov          #+#    #+#             */
-/*   Updated: 2019/03/15 19:45:55 by akorobov         ###   ########.fr       */
+/*   Updated: 2019/03/16 12:42:20 by akorobov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,6 +97,7 @@ void		introduction_room(t_room *cur_room, t_path *cur_path)
 	t_lock	*lpath;
 
 	ban(cur_room, cur_path);
+	cur_room->sum_locked++;
 	lpath = (t_lock *)ft_memalloc(sizeof(t_lock));
 	lpath->path = cur_path;
 	lpath->next = cur_room->locked;
