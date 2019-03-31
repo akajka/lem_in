@@ -6,7 +6,7 @@
 /*   By: akorobov <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/06 14:41:12 by akorobov          #+#    #+#             */
-/*   Updated: 2019/03/16 18:19:26 by akorobov         ###   ########.fr       */
+/*   Updated: 2019/03/17 18:11:10 by akorobov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,11 +26,11 @@ void				debug_mode(t_info *info, int mode)
 	printf("\033[1;34m%*s\n\n\n\033[0m", place, mods[mode]);
 }
 
-void				debug_print_queue(t_info *info)
+void				debug_print_queue(t_queue *queue, t_info *info)
 {
 	t_queue			*l;
 
-	l = info->queue;
+	l = queue;
 	debug_mode(info, DEBUG_QUEUE_MODE);
 	while (l)
 	{
@@ -61,7 +61,7 @@ void				debug_info_room(t_info *info)
 	{
 		print_elem_str(tmp->name_room, info->max.ts_cols, DEBUG_NAME_ROOM);
 		print_elem_nbr(tmp->p, info->max.ts_cols, DEBUG_NUMBER_OF_LINKS);
-		print_info(info, tmp->links, tmp->locked, DEBUG_ID);
+		print_links(info, tmp->links);
 		tmp = tmp->next;
 	}
 	printf("\n\n");
@@ -75,13 +75,10 @@ void				debug_print_path(t_info *info)
 	path = info->paths;
 	while (path)
 	{
-		if (path->valid)
-		{
-			print_elem_str("", info->max.ts_cols, DEBUG_PATH);
-			print_elem_nbr(path->id, info->max.ts_cols, DEBUG_ID);
-			print_elem_nbr(path->room_col, info->max.ts_cols, DEBUG_LENGTH);
-			print_info(info, path->link, path->locked, DEBUG_ID_CONFLICT);
-		}
+		print_elem_str("", info->max.ts_cols, DEBUG_PATH);
+		print_elem_nbr(path->id, info->max.ts_cols, DEBUG_ID);
+		print_elem_nbr(path->room_col, info->max.ts_cols, DEBUG_LENGTH);
+		print_links(info, path->link);
 		path = path->next;
 	}
 	printf("\n");

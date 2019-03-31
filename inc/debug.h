@@ -6,7 +6,7 @@
 /*   By: akorobov <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/16 16:06:41 by akorobov          #+#    #+#             */
-/*   Updated: 2019/03/16 18:11:25 by akorobov         ###   ########.fr       */
+/*   Updated: 2019/03/17 14:36:32 by akorobov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,11 +28,9 @@
 
 # define DEBUG_LENGTH 0
 # define DEBUG_ID 1
-# define DEBUG_COMPATIBLE 2
-# define DEBUG_NUMBER_OF_ROOMS 3
-# define DEBUG_LINKS_START 4
-# define DEBUG_NUMBER_OF_LINKS 5
-# define DEBUG_ID_CONFLICT 6
+# define DEBUG_NUMBER_OF_ROOMS 2
+# define DEBUG_LINKS_START 3
+# define DEBUG_NUMBER_OF_LINKS 4
 
 typedef struct s_room		t_room;
 typedef struct s_link		t_link;
@@ -46,11 +44,10 @@ typedef struct s_info		t_info;
 void				debug(t_info *info);
 void				debug_mode(t_info *info, int mode);
 void				debug_info_room(t_info *info);
-void				debug_print_queue(t_info *info);
+void				debug_print_queue(t_queue *queue, t_info *info);
 void				debug_print_path(t_info *info);
 void				print_elem_str(char *data, int win, int description);
 void				print_elem_nbr(int data, int win, int description);
-void				print_info(t_info *info, t_link *link,
-		t_lock *lock, int op);
+void				print_links(t_info *info, t_link *link);
 
 #endif

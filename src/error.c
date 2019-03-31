@@ -6,7 +6,7 @@
 /*   By: akorobov <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/03 18:19:57 by akorobov          #+#    #+#             */
-/*   Updated: 2019/03/13 13:52:59 by akorobov         ###   ########.fr       */
+/*   Updated: 2019/03/18 15:43:09 by akorobov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ void				print_error(int error, int string)
 	"🐜 Error during initialization ants.🐜", "Unknow room error.",
 	"Repeat of name room.", "Not valid link.",
 	"Error during initialization link.",
-	"Repeat of coorditanates.",
+	"Coordinate repetition.",
 	"Unccorect name room.",
 	"Path not found.",
 	"Memory allocation error.",

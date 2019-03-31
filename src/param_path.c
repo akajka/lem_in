@@ -6,11 +6,21 @@
 /*   By: akorobov <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/12 13:57:50 by akorobov          #+#    #+#             */
-/*   Updated: 2019/03/16 12:42:20 by akorobov         ###   ########.fr       */
+/*   Updated: 2019/03/17 18:17:59 by akorobov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "lem_in.h"
+
+t_queue		*init_queue(t_info *info)
+{
+	t_queue	*queue;
+
+	queue = (t_queue *)ft_memalloc(sizeof(t_queue));
+	queue->link = (t_link *)ft_memalloc(sizeof(t_link));
+	queue->link->room = info->start;
+	return (queue);
+}
 
 int			*init_len(t_info *info)
 {
@@ -23,8 +33,7 @@ int			*init_len(t_info *info)
 	path = info->start_path;
 	while (path)
 	{
-		if (path->valid)
-			ret[count++] = path->room_col;
+		ret[count++] = path->room_col;
 		path = path->prev;
 	}
 	return (ret);
@@ -44,62 +53,10 @@ void		ness_use_path(t_info *info)
 	while (path)
 	{
 		j = -1;
-		if (path->valid && ++info->col_val_path)
-		{
-			while (++j != i)
-				path->ness += len[i] - len[j];
-			i++;
-		}
+		while (++j != i)
+			path->ness += len[i] - len[j];
+		i++;
 		path = path->prev;
 	}
 	free(len);
-}
-
-void		add_lock(t_path *first, t_path *second)
-{
-	t_lock	*lock;
-
-	first->sum_not_compatible++;
-	lock = (t_lock *)ft_memalloc(sizeof(t_lock));
-	lock->path = second;
-	lock->next = first->locked;
-	first->locked = lock;
-	second->sum_not_compatible++;
-	lock = (t_lock *)ft_memalloc(sizeof(t_lock));
-	lock->path = first;
-	lock->next = second->locked;
-	second->locked = lock;
-}
-
-void		ban(t_room *room, t_path *path)
-{
-	t_lock	*lpath;
-	t_lock	*l_not_val_path;
-
-	lpath = room->locked;
-	while (lpath)
-	{
-		l_not_val_path = path->locked;
-		while (l_not_val_path)
-		{
-			if (l_not_val_path->path == lpath->path)
-				break ;
-			l_not_val_path = l_not_val_path->next;
-		}
-		if (!l_not_val_path)
-			add_lock(path, lpath->path);
-		lpath = lpath->next;
-	}
-}
-
-void		introduction_room(t_room *cur_room, t_path *cur_path)
-{
-	t_lock	*lpath;
-
-	ban(cur_room, cur_path);
-	cur_room->sum_locked++;
-	lpath = (t_lock *)ft_memalloc(sizeof(t_lock));
-	lpath->path = cur_path;
-	lpath->next = cur_room->locked;
-	cur_room->locked = lpath;
 }

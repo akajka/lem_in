@@ -6,7 +6,7 @@
 /*   By: akorobov <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/19 17:25:37 by akorobov          #+#    #+#             */
-/*   Updated: 2019/03/16 19:05:31 by akorobov         ###   ########.fr       */
+/*   Updated: 2019/03/27 09:53:21 by akorobov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@ void		check_extremity(t_info *info)
 
 	if (!info->start || !info->start->links)
 		print_error(ERROR_START_INIT, info->string);
-	if (!info->end)
+	if (!info->end || !info->end->links)
 		print_error(ERROR_END_INIT, info->string);
 	check = info->start->links;
 	while (check)
@@ -70,14 +70,15 @@ void		debug(t_info *info)
 
 void		result(t_info *info)
 {
-	DEBUG == 2 ? debug_info_room(info) : 0;
+	DEBUG ? debug_info_room(info) : 0;
 	DEBUG == 2 ? sleep(2) : 0;
 	if (!info->fast_end)
 	{
-		info->paths ? sort_path(info) : print_error(ERROR_PATH_NOT_FOUND,
-				info->string);
+		while (++info->us && bfs(info))
+			continue ;
 		DEBUG ? debug_print_path(info) : 0;
-		ants_go(info);
+		info->paths ? ants_go(info) : print_error(ERROR_PATH_NOT_FOUND,
+				info->string);
 	}
 	else
 		fast_end(info);
@@ -87,13 +88,11 @@ void		result(t_info *info)
 		printf("Need steps - %d\n", info->step->need_step);
 		printf("Steps - %d\n", info->step->col_steps);
 		printf("Sum paths- %d\n", info->col_path);
-		printf("Sum valid paths - %d\n", info->col_val_path);
 	}
 }
 
 int			main(int argc, char **argv)
 {
-	t_link	*link_to_end;
 	t_info	*info;
 
 	info = (t_info *)ft_memalloc(sizeof(t_info));
@@ -101,18 +100,7 @@ int			main(int argc, char **argv)
 	get_info(info);
 	check_extremity(info);
 	DEBUG ? debug(info) : 0;
-	info->queue = (t_queue *)ft_memalloc(sizeof(t_queue));
-	info->queue->link = (t_link *)ft_memalloc(sizeof(t_link));
-	info->queue->link->room = info->start;
-	info->q = info->queue;
-	while ((link_to_end = bfs(info)))
-	{
-		new_way(link_to_end, info);
-		if (!info->start_path)
-			info->start_path = info->paths;
-		info->queue = info->queue->next;
-	}
 	result(info);
-	info->leaks ? system("leaks -q lem_in") : 0;
+	info->leaks ? system("leaks -q lem-in") : 0;
 	return (0);
 }

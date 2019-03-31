@@ -6,7 +6,7 @@
 /*   By: akorobov <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/22 16:54:25 by akorobov          #+#    #+#             */
-/*   Updated: 2019/03/14 18:20:30 by akorobov         ###   ########.fr       */
+/*   Updated: 2019/03/18 12:44:28 by akorobov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,10 +20,11 @@ void		info_link(t_info *info)
 
 	count = 0;
 	need_room = info->room;
-	if (!ft_strchr(info->line->content, '-'))
+	if (!ft_strchr(info->line->content, '-') ||
+			ft_strchr(ft_strchr(info->line->content, '-') + 1, '-'))
 		print_error(ERROR_LINK_INIT, info->string);
 	link = ft_strsplit(info->line->content, '-');
-	if (!link[0] || !link[1])
+	if (!link[0] || !link[1] || link[2])
 		print_error(ERROR_LINK_INIT, info->string);
 	while (need_room && ft_strcmp(link[0], need_room->name_room))
 		need_room = need_room->next;

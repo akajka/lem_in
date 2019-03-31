@@ -6,7 +6,7 @@
 /*   By: akorobov <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/09 22:39:26 by akorobov          #+#    #+#             */
-/*   Updated: 2019/03/15 10:50:36 by akorobov         ###   ########.fr       */
+/*   Updated: 2019/03/27 09:56:17 by akorobov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,6 +42,7 @@ void		fast_end(t_info *info)
 	int		i;
 
 	i = 0;
+	info->col_path++;
 	while (++i <= info->ants)
 	{
 		write(1, "L", 1);
@@ -59,7 +60,6 @@ void		ants_go(t_info *info)
 	t_path	*tmp;
 
 	ant = 0;
-	DEBUG == 1 ? debug_print_path(info) : 0;
 	ness_use_path(info);
 	while (!info->done && ++info->done)
 	{
@@ -67,7 +67,7 @@ void		ants_go(t_info *info)
 		ant ? ant_go_to_the_next_room(info, ant) : 0;
 		while (tmp && ant < info->ants)
 		{
-			if (tmp->valid && info->ants - ant > tmp->ness)
+			if (info->ants - ant > tmp->ness)
 			{
 				info->done = 0;
 				info->ant_during_way[ant].path = tmp;

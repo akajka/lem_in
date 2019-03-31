@@ -6,7 +6,7 @@
 /*   By: akorobov <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/04 21:47:41 by akorobov          #+#    #+#             */
-/*   Updated: 2019/03/13 16:46:59 by akorobov         ###   ########.fr       */
+/*   Updated: 2019/03/17 18:19:54 by akorobov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,12 +17,12 @@ void		save_file(t_info *info, char **str)
 	char	*s;
 	t_list	*tmp;
 	t_list	*last;
-	
+
 	if (!(tmp = (t_list *)ft_memalloc(sizeof(t_list))))
 		print_error(ERROR_ALLOC_MEMORY, info->string);
 	if (info->step && *str)
-		if ((s = ft_strstr(*str,"#Here is the number of lines required:")))
-				info->step->need_step = ft_atoi(s + 38);
+		if ((s = ft_strstr(*str, "#Here is the number of lines required:")))
+			info->step->need_step = ft_atoi(s + 38);
 	last = info->file;
 	while (last->next)
 		last = last->next;

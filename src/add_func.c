@@ -6,7 +6,7 @@
 /*   By: akorobov <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/03 17:48:13 by akorobov          #+#    #+#             */
-/*   Updated: 2019/03/13 14:59:10 by akorobov         ###   ########.fr       */
+/*   Updated: 2019/03/18 15:05:14 by akorobov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,10 +39,11 @@ void		get_extremity(t_info *info)
 	info->line = info->line->next;
 	if (info->line && ++info->string)
 	{
-		while (info->line->content && info->line->content[0] == '#')
+		while (info->line->content && (info->line->content[0] == '#' &&
+					info->line->content[1] != '#') && ++info->string)
 			info->line = info->line->next;
 		split = ft_strsplit(info->line->content, ' ');
-		if (ft_size2d(split) != 3)
+		if (ft_size2d(split) != 3 || (!er ? info->start : info->end))
 			print_error(er, info->string);
 		info_room(info, split);
 		if (er == ERROR_START_INIT)
